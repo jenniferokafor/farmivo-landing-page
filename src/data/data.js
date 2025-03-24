@@ -9,19 +9,19 @@ import precisionFarmingImg from "../assets/pexels-japy-1928491.jpg";
 export const stats = [
   {
     title: "50+",
-    description: "Year of Experience",
+    description: "Years of Experience",
   },
   {
     title: "200+",
-    description: "Field in Progress",
+    description: "Fields in Progress",
   },
   {
     title: "120,000+",
-    description: "Farmer Around World",
+    description: "Farmers Around World",
   },
   {
     title: "$15 Billion",
-    description: "Agricultural Product",
+    description: "Agricultural Products",
   },
 ];
 

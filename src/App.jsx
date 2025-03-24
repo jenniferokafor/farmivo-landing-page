@@ -25,6 +25,7 @@ function App() {
   const [activeTextCarouselItem, setActiveTextCarouselItem] =
     useState("organic-farm");
   const [inputValue, setInputValue] = useState("");
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
   const year = new Date()?.getFullYear();
   const textCarouselDescription = textCarouselDescriptions?.find(
@@ -40,47 +41,88 @@ function App() {
   };
 
   return (
-    <>
-      <div className="hero">
-        <div className="hero-container">
-          <header>
+    <div className="home">
+      <header>
+        <div className="header-logo">
+          <img src={logo} alt="Farmivo" />
+          <span>Farmivo</span>
+        </div>
+
+        <nav className="desktop-nav">
+          <a href="/">
+            <img src={home} alt="home" />
+            <span>Home</span>
+          </a>
+          <a href="/">About Us</a>
+          <a href="/">Reviews</a>
+          <a href="/">Products</a>
+          <a href="/">Blog</a>
+        </nav>
+
+        <div className="header-buttons desktop-buttons">
+          <button>Sign in</button>
+          <button>Sign up Free</button>
+        </div>
+
+        <button
+          className="hamburger-icon"
+          onClick={() => setIsMobileNavOpen(true)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </header>
+
+      {isMobileNavOpen && (
+        <div className="mobile-nav-overlay">
+          <div className="mobile-nav-header">
             <div className="header-logo">
               <img src={logo} alt="Farmivo" />
               <span>Farmivo</span>
             </div>
-            <nav>
-              <a href="/">
-                <img src={home} alt="home" />
-                <span>Home</span>
-              </a>
-              <a href="/">About Us</a>
-              <a href="/">Reviews</a>
-              <a href="/">Products</a>
-              <a href="/">Blog</a>
-            </nav>
-            <div className="header-buttons">
-              <button>Sign in</button>
-              <button>Sign up Free</button>
-            </div>
-          </header>
-          <div style={{ marginTop: 80 }}></div>
+            <button
+              className="close-icon"
+              onClick={() => setIsMobileNavOpen(false)}
+            >
+              &times;
+            </button>
+          </div>
+
+          <nav className="mobile-nav-links">
+            <a href="/">Home</a>
+            <a href="/">About Us</a>
+            <a href="/">Reviews</a>
+            <a href="/">Products</a>
+            <a href="/">Blog</a>
+          </nav>
+          <div className="mobile-nav-buttons">
+            <button>Sign in</button>
+            <button>Sign up Free</button>
+          </div>
+        </div>
+      )}
+
+      <div className="hero">
+        <div className="hero-container">
+          <div style={{ paddingTop: 180 }}></div>
           <div className="notification">
             <div></div>
-            <span>Top Notch Webinar Platform</span>
+            <span>Empowering Modern Farmers</span>
           </div>
-          <div style={{ marginTop: 24 }}></div>
-          <h1 className="hero-heading">Bring Fresh Growth to Agriculture.</h1>
+          <div style={{ marginTop: 8 }}></div>
+          <h1 className="hero-heading">Cultivating a Greener Future</h1>
           <p className="hero-description">
-            Experience the ultimate golfing journey with expert tips, premium
-            gear, and professional insights.
+            Discover cutting-edge farming solutions and sustainable practices
+            that empower modern farmers.
           </p>
           <div style={{ marginTop: 24 }}></div>
           <button className="hero-cta-btn">
             <span>Get Started</span>
             <img src={arrow} role="presentation" />
           </button>
-          <p className="hero-bottom-left">The Journey to a Perfection.</p>
-          <p className="hero-bottom-right">Book a Free Driving Experience</p>
+          <p className="hero-bottom-left">The Journey to Better Agriculture.</p>
+          <p className="hero-bottom-right">Book a Free Farm Tour</p>
           <img
             src={starTopLeft}
             alt="star"
@@ -139,28 +181,30 @@ function App() {
       </div>
       <div style={{ marginTop: 80 }}></div>
       <div className="image-carousel">
-        {imageCarouselItems?.map((each, i) => (
-          <div key={i} className="image-carousel-item">
-            {each?.key === "organic-fertilizer" && (
-              <div className="image-carousel-item-top">
-                <p>
-                  Get
-                  <br />
-                  Started Now
-                </p>
-                <img src={addIcon} alt="add" />
+        <div className="image-carousel-inner">
+          {imageCarouselItems?.map((each, i) => (
+            <div key={i} className="image-carousel-item">
+              {each?.key === "organic-fertilizer" && (
+                <div className="image-carousel-item-top">
+                  <p>
+                    Get
+                    <br />
+                    Started Now
+                  </p>
+                  <img src={addIcon} alt="add" />
+                </div>
+              )}
+              {each?.key === "bio-medicine-cultivation" && (
+                <div style={{ marginTop: 60 }}></div>
+              )}
+              <img src={each?.image} alt={each?.title} />
+              <div className="image-carousel-item-title">
+                <span>0{i + 1}</span>
+                <span>{each?.title}</span>
               </div>
-            )}
-            {each?.key === "bio-medicine-cultivation" && (
-              <div style={{ marginTop: 60 }}></div>
-            )}
-            <img src={each?.image} alt={each?.title} />
-            <div className="image-carousel-item-title">
-              <span>0{i + 1}</span>
-              <span>{each?.title}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
       <div style={{ marginTop: 94 }}></div>
       <div className="full-width-img-section">
@@ -293,7 +337,7 @@ function App() {
           </div>
         </div>
       </footer>
-    </>
+    </div>
   );
 }
 
