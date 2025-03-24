@@ -142,6 +142,6 @@ export const contactInfo = [
   },
   {
     title: "EMAIL",
-    lines: ["hallo.cultivo@gmail.com"],
+    lines: ["hello.farmivo@gmail.com"],
   },
 ];
