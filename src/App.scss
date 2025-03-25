@@ -662,18 +662,13 @@ button {
   }
 }
 
-.image-carousel-item {
-  > img {
-    width: calc(100vw - 40px) !important;
-    height: 498px;
-    object-fit: cover;
-    border-radius: 24px;
-  }
+.image-carousel-item > img {
+  height: 498px;
+  object-fit: cover;
+  border-radius: 24px;
 
-  @media only screen and (min-width: 1200px) {
-    > img {
-      width: 100% !important;
-    }
+  @include mobile {
+    width: calc(100vw - 40px);
   }
 }
 
