@@ -74,11 +74,6 @@ export const imageCarouselItems = [
     title: "Automation Harvest",
     image: automationHarvestImg,
   },
-  {
-    key: "bio-medicine-cultivation",
-    title: "Bio-Medicine Cultivation",
-    image: bioMedicineImg,
-  },
 ];
 
 export const imageGridItems = [

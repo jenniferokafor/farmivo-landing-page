@@ -1,25 +1,28 @@
-import "./App.scss";
+import { useRef, useState } from "react";
+
 import logo from "./assets/logo.svg";
 import home from "./assets/home.svg";
 import arrow from "./assets/arrow.svg";
+import PreCTA from "./components/PreCta";
+import useInView from "./hooks/useInView";
+import Socials from "./components/Socials";
 import starTopLeft from "./assets/star-top-left.svg";
-import starBottomLeft from "./assets/star-bottom-left.svg";
 import starTopRight from "./assets/star-top-right.svg";
+import ImageCarousel from "./components/ImageCarousel";
+import useHeaderBgScroll from "./hooks/useHeaderBgScroll";
+import starBottomLeft from "./assets/star-bottom-left.svg";
 import starBottomRight from "./assets/star-bottom-right.svg";
 import {
   contactInfo,
   footerLinks,
-  imageCarouselItems,
   imageGridItems,
   secondaryFooterLinks,
   stats,
   textCarouselDescriptions,
   textCarouselTitles,
 } from "./data/data";
-import { useState } from "react";
-import addIcon from "./assets/add.svg";
-import arielViewImg from "./assets/pexels-tomfisk-2806489.jpg";
-import Socials from "./components/Socials";
+
+import "./App.scss";
 
 function App() {
   const [activeTextCarouselItem, setActiveTextCarouselItem] =
@@ -27,7 +30,20 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
-  const year = new Date()?.getFullYear();
+  const isScrolled = useHeaderBgScroll();
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const leftTextRef = useRef(null);
+  const rightTextRef = useRef(null);
+  const statRef = useRef(null);
+
+  const inView = useInView(statRef, { threshold: 0.5 });
+  const leftInView = useInView(leftRef, { threshold: 0.5 });
+  const rightInView = useInView(rightRef, { threshold: 0.5 });
+  const leftTextInView = useInView(leftTextRef, { threshold: 0.5 });
+  const rightTextInView = useInView(rightTextRef, { threshold: 0.5 });
+
+  const year = new Date().getFullYear();
   const textCarouselDescription = textCarouselDescriptions?.find(
     (item) => item.key === activeTextCarouselItem
   )?.description;
@@ -42,12 +58,11 @@ function App() {
 
   return (
     <div className="home">
-      <header>
+      <header className={isScrolled ? "scrolled" : ""}>
         <div className="header-logo">
           <img src={logo} alt="Farmivo" />
           <span>Farmivo</span>
         </div>
-
         <nav className="desktop-nav">
           <a href="/">
             <img src={home} alt="home" />
@@ -58,12 +73,10 @@ function App() {
           <a href="/">Products</a>
           <a href="/">Blog</a>
         </nav>
-
         <div className="header-buttons desktop-buttons">
           <button>Sign in</button>
           <button>Sign up Free</button>
         </div>
-
         <button
           className="hamburger-icon"
           onClick={() => setIsMobileNavOpen(true)}
@@ -73,7 +86,6 @@ function App() {
           <span></span>
         </button>
       </header>
-
       {isMobileNavOpen && (
         <div className="mobile-nav-overlay">
           <div className="mobile-nav-header">
@@ -88,7 +100,6 @@ function App() {
               &times;
             </button>
           </div>
-
           <nav className="mobile-nav-links">
             <a href="/">Home</a>
             <a href="/">About Us</a>
@@ -102,7 +113,6 @@ function App() {
           </div>
         </div>
       )}
-
       <div className="hero">
         <div className="hero-container">
           <div style={{ paddingTop: 180 }}></div>
@@ -121,8 +131,22 @@ function App() {
             <span>Get Started</span>
             <img src={arrow} role="presentation" />
           </button>
-          <p className="hero-bottom-left">The Journey to Better Agriculture.</p>
-          <p className="hero-bottom-right">Book a Free Farm Tour</p>
+          <p
+            ref={leftRef}
+            className={`hero-bottom-left ${
+              leftInView ? "animate-from-left" : ""
+            }`}
+          >
+            The Journey to Better Agriculture.
+          </p>
+          <p
+            ref={rightRef}
+            className={`hero-bottom-right ${
+              rightInView ? "animate-from-right" : ""
+            }`}
+          >
+            Book a Free Farm Tour
+          </p>
           <img
             src={starTopLeft}
             alt="star"
@@ -151,7 +175,11 @@ function App() {
       </div>
       <div className="stats">
         {stats?.map((each, i) => (
-          <div key={i} className="stat-item">
+          <div
+            key={i}
+            ref={statRef}
+            className={`stat-item ${inView ? "animate" : ""}`}
+          >
             <h2>{each?.title}</h2>
             <p>{each?.description}</p>
             {i !== 3 && <div></div>}
@@ -180,40 +208,23 @@ function App() {
         <p className="text-carousel-right">{textCarouselDescription}</p>
       </div>
       <div style={{ marginTop: 80 }}></div>
-      <div className="image-carousel">
-        <div className="image-carousel-inner">
-          {imageCarouselItems?.map((each, i) => (
-            <div key={i} className="image-carousel-item">
-              {each?.key === "organic-fertilizer" && (
-                <div className="image-carousel-item-top">
-                  <p>
-                    Get
-                    <br />
-                    Started Now
-                  </p>
-                  <img src={addIcon} alt="add" />
-                </div>
-              )}
-              {each?.key === "bio-medicine-cultivation" && (
-                <div style={{ marginTop: 60 }}></div>
-              )}
-              <img src={each?.image} alt={each?.title} />
-              <div className="image-carousel-item-title">
-                <span>0{i + 1}</span>
-                <span>{each?.title}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ImageCarousel />
       <div style={{ marginTop: 94 }}></div>
       <div className="full-width-img-section">
         <p>Collaborate and Learn from Industry Experts and Enthusiasts</p>
       </div>
       <div style={{ marginTop: 100 }}></div>
       <div className="text-section">
-        <h2>Next-Gen Solutions For Optimal Crop Growth</h2>
-        <p>
+        <h2
+          ref={leftTextRef}
+          className={`${leftTextInView ? "animate-from-left" : ""}`}
+        >
+          Next-Gen Solutions For Optimal Crop Growth
+        </h2>
+        <p
+          ref={rightTextRef}
+          className={`${rightTextInView ? "animate-from-right" : ""}`}
+        >
           We provide cutting-edge services to help farmers maximize crop yields.
           Our precision farming, crop monitoring, and automation solutions aim
           to revolutionize agriculture.
@@ -234,13 +245,7 @@ function App() {
         ))}
       </div>
       <div style={{ marginTop: 124 }}></div>
-      <div className="pre-cta">
-        <img src={arielViewImg} alt={"ariel view of farm"} />
-        <p>
-          Changing the Game in Farming with Sustainable Practices and
-          CoolTechnologies, Shaping the Future of Agriculture
-        </p>
-      </div>
+      <PreCTA />
       <div style={{ marginTop: 152 }}></div>
       <div className="cta">
         <h2>Join the Agricultural Revolution Today!</h2>
@@ -288,13 +293,13 @@ function App() {
               <br />
               We&apos;re here to help!
             </p>
-            <div class="subscribe-container">
+            <div className="subscribe-container">
               <input
                 type="email"
-                class="subscribe-input"
+                className="subscribe-input"
                 placeholder="Enter your email"
               />
-              <button class="subscribe-button">Subscribe</button>
+              <button className="subscribe-button">Subscribe</button>
             </div>
           </div>
           <div className="footer-right">
